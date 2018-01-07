@@ -1,3 +1,9 @@
+/*
+The Post struct.
+Describes the fields we're storing in the database, and
+provides functions for generating HTML responses
+*/
+
 package blog
 
 import (
