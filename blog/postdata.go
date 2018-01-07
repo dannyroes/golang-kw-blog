@@ -22,33 +22,9 @@ func InsertPost(post Post) (string, error) {
 
 	post.Id = bson.NewObjectId()
 
-	//If the post doesn't have a created time set explicitly, set one
-	if post.PostedTime.IsZero() {
-		post.PostedTime = time.Now()
-	}
+	//TODO: If the post doesn't have a created time set explicitly, set one
 
 	return post.Id.Hex(), collection.Insert(post)
-}
-
-func UpdatePost(post Post) error {
-	if !isDbConnected() {
-		return errors.New("Database is not connected")
-	}
-	post.UpdatedTime = time.Now()
-
-	collection := DB.C("posts")
-	query := bson.M{"_id": post.Id}
-
-	return collection.Update(query, post)
-}
-
-func DeletePost(id string) error {
-	if !isDbConnected() {
-		return errors.New("Database is not connected")
-	}
-	collection := DB.C("posts")
-
-	return collection.RemoveId(bson.ObjectIdHex(id))
 }
 
 func GetAllPosts() ([]Post, error) {
@@ -70,10 +46,31 @@ func GetPost(id string) (Post, error) {
 		return post, errors.New("Database is not connected")
 	}
 
-	query := bson.M{"_id": bson.ObjectIdHex(id)}
+	//TODO: Query for the specified post by id
+	query := bson.M{}
 
 	err := DB.C("posts").Find(query).One(&post)
 	return post, err
+}
+
+func UpdatePost(post Post) error {
+	if !isDbConnected() {
+		return errors.New("Database is not connected")
+	}
+	collection := DB.C("posts")
+	//TODO: Set the post's UpdatedTime and save to the database
+	query := bson.M{}
+
+	return collection.Update(query, post)
+}
+
+func DeletePost(id string) error {
+	if !isDbConnected() {
+		return errors.New("Database is not connected")
+	}
+	collection := DB.C("posts")
+
+	return collection.RemoveId(bson.ObjectIdHex(id))
 }
 
 func AddLike(id string) error {
@@ -82,7 +79,8 @@ func AddLike(id string) error {
 	}
 
 	query := bson.M{"_id": bson.ObjectIdHex(id)}
-	update := bson.M{"$inc": bson.M{"likes": 1}}
+	//TODO: Make an update object to increment the likes counter
+	update := bson.M{}
 
 	err := DB.C("posts").Update(query, update)
 	return err
@@ -101,7 +99,8 @@ func AddComment(id string, comment Comment) error {
 	comment.PostedTime = time.Now()
 
 	query := bson.M{"_id": bson.ObjectIdHex(id)}
-	update := bson.M{"$push": bson.M{"comments": comment}}
+	//TODO: Make an update object to push the new comment to the comments array
+	update := bson.M{}
 
 	err := DB.C("posts").Update(query, update)
 	return err
@@ -113,7 +112,8 @@ func DeleteComment(postId, commentId string) error {
 	}
 
 	query := bson.M{"_id": bson.ObjectIdHex(postId)}
-	update := bson.M{"$pull": bson.M{"comments": bson.M{"_id": bson.ObjectIdHex(commentId)}}}
+	//TODO: Make an update object to push remove the specified comment from the comments array
+	update := bson.M{}
 
 	err := DB.C("posts").Update(query, update)
 	return err

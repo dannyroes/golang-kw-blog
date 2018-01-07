@@ -6,22 +6,24 @@ import (
 	"time"
 )
 
+//TODO: Add field definitions
 type Post struct {
 	Id          bson.ObjectId `bson:"_id"`
 	Author      string        `bson:"author"`
 	Title       string        `bson:"title"`
 	Body        string        `bson:"body"`
 	PostedTime  time.Time     `bson:"created"`
-	UpdatedTime time.Time     `bson:"updated,omitempty"`
-	Comments    []Comment     `bson:"comments,omitempty"`
-	Likes       int           `bson:"likes,omitempty"`
+	UpdatedTime time.Time
+	Comments    []Comment
+	Likes       int
 }
 
+//TODO: Add field definitions
 type Comment struct {
-	Id         bson.ObjectId `bson:"_id"`
-	Author     string        `bson:"author"`
-	Text       string        `bson:"comment"`
-	PostedTime time.Time     `bson:"created"`
+	Id         bson.ObjectId
+	Author     string
+	Text       string
+	PostedTime time.Time
 }
 
 func (post Post) GetListHtml() string {

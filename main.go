@@ -5,10 +5,7 @@ import (
 )
 
 func main() {
-	err := blog.ConnectDB()
-	if err != nil {
-		panic(err)
-	}
+	//TODO: Connect to the database
 
 	blog.Run()
 }
